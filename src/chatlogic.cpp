@@ -13,14 +13,14 @@
 
 ChatLogic::ChatLogic()
 {
-   _chatBot = new ChatBot();
-   _chatBot->SetChatLogicHandle(this);
+   //_chatBot = new ChatBot(this);
+   //_chatBot->SetChatLogicHandle(this);
 }
 
 ChatLogic::~ChatLogic()
 {
    
-    delete _chatBot;
+    //delete _chatBot;
 
     // delete all nodes
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
@@ -189,8 +189,10 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // TODO: add chatbot to graph root node
-    _chatBot->SetRootNode(rootNode);
-    rootNode->moveChatbotHere(_chatBot);
+    ChatBot chatBot(this);
+    chatBot.SetRootNode(rootNode);
+    rootNode->moveChatbotHere(std::move(chatBot));
+    _currentNode = rootNode;
     // END OF TODO
 
 }
@@ -209,13 +211,13 @@ void ChatLogic::SendMessageToUser(std::string message)
 void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog) {}
 void ChatLogic::SendMessageToUser(std::string message) {}
 
-void ChatLogic::SetChatbotHandle(ChatBot *chatbot) {
-    _chatBot = chatbot;
+void ChatLogic::SetCurrentNode(GraphNode *currentNode) {
+    _currentNode = currentNode;
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message) {
-    if (_chatBot) {
-        _chatBot->ReceiveMessageFromUser(message);
+    if (_currentNode->GetChatBot()) {
+        _currentNode->GetChatBot()->ReceiveMessageFromUser(message);
     }
 }
 #endif

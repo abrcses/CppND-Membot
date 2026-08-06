@@ -9,18 +9,40 @@
 #include "chatbot.h"
 
 // constructor WITHOUT memory allocation
-ChatBot::ChatBot()
+ChatBot::ChatBot(ChatLogic* chatLogic) : _chatLogic(chatLogic)
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Default Constructor <<<" << std::endl;
-    _chatLogic = nullptr;
+    //_chatLogic = nullptr;
+    _currentNode = nullptr;
     _rootNode = nullptr;
 }
 
 // TODO the following:
     // TODO: add copy constructor
+ChatBot::ChatBot(const ChatBot& other)
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Copy Constructor <<<" << std::endl;
+}
     // TODO: add copy assignment operator
+ChatBot& ChatBot::operator=(const ChatBot& other)
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Copy Assignment Operator <<<" << std::endl;
+    return *this;
+}
     // TODO: add move constructor
+ChatBot::ChatBot(ChatBot&& other)
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Move Constructor <<<" << std::endl;
+    _chatLogic = std::move(other._chatLogic);
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+}
     // TODO: add move assignment operator
+ChatBot& ChatBot::operator=(ChatBot&& other)
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Move Assignment Operator <<<" << std::endl;
+    return *this;
+}
 // END OF TODO
 
 ChatBot::~ChatBot()
@@ -80,6 +102,7 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
 void ChatBot::SetCurrentNode(GraphNode *node)
 {
     _currentNode = node;
+    _chatLogic->SetCurrentNode(node);
     std::vector<std::string> answers = _currentNode->GetAnswers();
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);

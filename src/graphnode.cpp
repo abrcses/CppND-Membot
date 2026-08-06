@@ -28,15 +28,15 @@ void GraphNode::AddEdgeToChildNode(GraphEdge* edge)
 }
 
 
-void GraphNode::moveChatbotHere(ChatBot* chatbot) 
+void GraphNode::moveChatbotHere(ChatBot&& chatbot) 
 {
-    _chatBot = chatbot;
+    _chatBot = std::make_unique<ChatBot>(std::move(chatbot));
     _chatBot->SetCurrentNode(this);
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
-    newNode->moveChatbotHere(std::move(_chatBot)); // TODO
+    newNode->moveChatbotHere(std::move(*_chatBot)); // TODO
 }
 
 
