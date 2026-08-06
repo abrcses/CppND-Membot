@@ -25,17 +25,10 @@ public:
     ChatBot(std::unique_ptr<ChatLogic> chatLogic);                     // constructor
     ChatBot(std::string filename); // constructor (filename is ignored in CLI)
     ~ChatBot();
-
-    // TODO the following:
-        // TODO: add copy constructor
     ChatBot(const ChatBot& other);
-        // TODO: add copy assignment operator
     ChatBot& operator=(const ChatBot& other);
-        // TODO: add move constructor
-    ChatBot(ChatBot&& other);
-        // TODO: add move assignment operator
-    ChatBot& operator=(ChatBot&& other);
-    // END OF TODO
+    ChatBot(ChatBot&& other) noexcept;
+    ChatBot& operator=(ChatBot&& other) noexcept;
 
     // getters / setters
     void SetCurrentNode(GraphNode *node);

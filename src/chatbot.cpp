@@ -12,13 +12,10 @@
 ChatBot::ChatBot(std::unique_ptr<ChatLogic> chatLogic) : _chatLogic(std::move(chatLogic))
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Default Constructor <<<" << std::endl;
-    //_chatLogic = nullptr;
     _currentNode = nullptr;
     _rootNode = nullptr;
 }
 
-// TODO the following:
-    // TODO: add copy constructor
 ChatBot::ChatBot(const ChatBot& other)
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Copy Constructor <<<" << std::endl;
@@ -26,7 +23,7 @@ ChatBot::ChatBot(const ChatBot& other)
     _currentNode = other._currentNode;
     _rootNode = other._rootNode;
 }
-    // TODO: add copy assignment operator
+
 ChatBot& ChatBot::operator=(const ChatBot& other)
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Copy Assignment Operator <<<" << std::endl;
@@ -37,16 +34,16 @@ ChatBot& ChatBot::operator=(const ChatBot& other)
     }
     return *this;
 }
-    // TODO: add move constructor
-ChatBot::ChatBot(ChatBot&& other)
+
+ChatBot::ChatBot(ChatBot&& other) noexcept
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Move Constructor <<<" << std::endl;
     _chatLogic = std::move(other._chatLogic);
     _currentNode = other._currentNode;
     _rootNode = other._rootNode;
 }
-    // TODO: add move assignment operator
-ChatBot& ChatBot::operator=(ChatBot&& other)
+
+ChatBot& ChatBot::operator=(ChatBot&& other) noexcept
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Move Assignment Operator <<<" << std::endl;
     if (this != &other) {
@@ -56,7 +53,6 @@ ChatBot& ChatBot::operator=(ChatBot&& other)
     }
     return *this;
 }
-// END OF TODO
 
 ChatBot::~ChatBot()
 {

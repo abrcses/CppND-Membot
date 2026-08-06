@@ -16,7 +16,7 @@ class ChatLogic
 {
 private:
     // data handles (owned)
-    std::vector<std::unique_ptr<GraphNode>> _nodes; // TODO
+    std::vector<std::unique_ptr<GraphNode>> _nodes;
 
     // data handles (not owned)
     GraphNode *_currentNode;
