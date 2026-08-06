@@ -15,6 +15,15 @@ ChatLogic::ChatLogic()
 {
 }
 
+ChatLogic::ChatLogic(const ChatLogic& other)
+{
+    _currentNode = other._currentNode;
+    _panelDialog = other._panelDialog;
+    for (const auto& n : other._nodes) {
+        _nodes.push_back(std::make_unique<GraphNode>(*n));
+    }
+}
+
 ChatLogic::~ChatLogic()
 {
 }
@@ -123,9 +132,9 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](const std::unique_ptr<GraphNode>& node) { return node->GetID() == std::stoi(childToken->second); }); // TODO
 
                             // TODO: create new edge
-                            GraphEdge *edge = new GraphEdge(id);
-                            edge->SetChildNode((*childNode).get());
-                            edge->SetParentNode((*parentNode).get());
+                            auto edge = std::make_unique<GraphEdge>(id);
+                            edge->SetChildNode(childNode->get());
+                            edge->SetParentNode(parentNode->get());
                             //_edges.push_back(edge);
                             // END OF TODO
 
@@ -133,8 +142,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
 
                             // TODO: store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge);  // TODO: add non-owning reference
-                            (*parentNode)->AddEdgeToChildNode(edge); // TODO: transfer ownership to parent node
+                            childNode->get()->AddEdgeToParentNode(edge.get());  // TODO: add non-owning reference
+                            parentNode->get()->AddEdgeToChildNode(std::move(edge)); // TODO: transfer ownership to parent node
                             // END OF TODO
                         }
                     }
@@ -179,7 +188,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // TODO: add chatbot to graph root node
-    ChatBot chatBot(this);
+    ChatBot chatBot(std::unique_ptr<ChatLogic>(this));
     chatBot.SetRootNode(rootNode);
     rootNode->moveChatbotHere(std::move(chatBot));
     _currentNode = rootNode;

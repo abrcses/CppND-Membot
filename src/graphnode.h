@@ -32,6 +32,7 @@ private:
 public:
     // constructor / destructor
     GraphNode(int id);
+    GraphNode(const GraphNode& other);
     ~GraphNode();
 
     // getter / setter
@@ -45,7 +46,7 @@ public:
     // proprietary functions
     void AddToken(std::string token); // add answers to list
     void AddEdgeToParentNode(GraphEdge *edge);
-    void AddEdgeToChildNode(GraphEdge *edge); // TODO
+    void AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge); // TODO
 
     void moveChatbotHere(ChatBot&& chatBot); // TODO
 

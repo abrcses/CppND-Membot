@@ -9,7 +9,7 @@
 #include "chatbot.h"
 
 // constructor WITHOUT memory allocation
-ChatBot::ChatBot(ChatLogic* chatLogic) : _chatLogic(chatLogic)
+ChatBot::ChatBot(std::unique_ptr<ChatLogic> chatLogic) : _chatLogic(std::move(chatLogic))
 {
     std::cerr << ">>> Rule of Five Component: ChatBot Default Constructor <<<" << std::endl;
     //_chatLogic = nullptr;
@@ -19,9 +19,24 @@ ChatBot::ChatBot(ChatLogic* chatLogic) : _chatLogic(chatLogic)
 
 // TODO the following:
     // TODO: add copy constructor
-// deleted
+ChatBot::ChatBot(const ChatBot& other)
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Copy Constructor <<<" << std::endl;
+    _chatLogic = std::make_unique<ChatLogic>(*other._chatLogic);
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+}
     // TODO: add copy assignment operator
-// deleted
+ChatBot& ChatBot::operator=(const ChatBot& other)
+{
+    std::cerr << ">>> Rule of Five Component: ChatBot Copy Assignment Operator <<<" << std::endl;
+    if (this != &other) {
+        _chatLogic = std::make_unique<ChatLogic>(*other._chatLogic);
+        _currentNode = other._currentNode;
+        _rootNode = other._rootNode;
+    }
+    return *this;
+}
     // TODO: add move constructor
 ChatBot::ChatBot(ChatBot&& other)
 {

@@ -7,6 +7,17 @@ GraphNode::GraphNode(int id)
     _id = id;
 }
 
+GraphNode::GraphNode(const GraphNode& other)
+{
+    _chatBot = std::make_unique<ChatBot>(*other._chatBot);
+    _parentEdges = other._parentEdges;
+    _id = other._id;
+    _answers = other._answers;
+    for (const auto& e : other._childEdges) {
+        _childEdges.push_back(std::make_unique<GraphEdge>(*e));
+    }
+}
+
 GraphNode::~GraphNode()
 {
     // leave as-is
@@ -22,9 +33,9 @@ void GraphNode::AddEdgeToParentNode(GraphEdge *edge)
     _parentEdges.push_back(edge);
 }
 
-void GraphNode::AddEdgeToChildNode(GraphEdge* edge)
+void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 {
-    _childEdges.push_back(std::unique_ptr<GraphEdge>(edge)); // TODO
+    _childEdges.push_back(std::move(edge)); // TODO
 }
 
 

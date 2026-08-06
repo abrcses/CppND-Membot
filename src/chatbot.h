@@ -22,15 +22,15 @@ private:
 
 public:
     // constructors / destructors
-    ChatBot(ChatLogic* chatLogic);                     // constructor
+    ChatBot(std::unique_ptr<ChatLogic> chatLogic);                     // constructor
     ChatBot(std::string filename); // constructor (filename is ignored in CLI)
     ~ChatBot();
 
     // TODO the following:
         // TODO: add copy constructor
-    ChatBot(const ChatBot& other) = delete;
+    ChatBot(const ChatBot& other);
         // TODO: add copy assignment operator
-    ChatBot& operator=(const ChatBot& other) = delete;
+    ChatBot& operator=(const ChatBot& other);
         // TODO: add move constructor
     ChatBot(ChatBot&& other);
         // TODO: add move assignment operator
