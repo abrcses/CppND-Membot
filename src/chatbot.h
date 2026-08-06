@@ -28,9 +28,9 @@ public:
 
     // TODO the following:
         // TODO: add copy constructor
-    ChatBot(const ChatBot& other);
+    ChatBot(const ChatBot& other) = delete;
         // TODO: add copy assignment operator
-    ChatBot& operator=(const ChatBot& other);
+    ChatBot& operator=(const ChatBot& other) = delete;
         // TODO: add move constructor
     ChatBot(ChatBot&& other);
         // TODO: add move assignment operator
@@ -40,7 +40,6 @@ public:
     // getters / setters
     void SetCurrentNode(GraphNode *node);
     void SetRootNode(GraphNode *rootNode) { _rootNode = rootNode; }
-    //void SetChatLogicHandle(ChatLogic *chatLogic) { _chatLogic = chatLogic; }
 
     // communication
     void ReceiveMessageFromUser(std::string message);

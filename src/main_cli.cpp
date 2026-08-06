@@ -13,12 +13,12 @@ public:
 };
 
 int main() {
-    ChatLogicCLI chatLogic;
-    chatLogic.LoadAnswerGraphFromFile("../src/answergraph.txt");
+    ChatLogicCLI* chatLogic = new ChatLogicCLI();
+    chatLogic->LoadAnswerGraphFromFile("../src/answergraph.txt");
     // Check if the root node was loaded (basic check for file load success)
     // If the file could not be opened, exit gracefully
     // (Assume that if no nodes are loaded, the file was not found or empty)
-    if (!chatLogic.IsGraphLoaded()) {
+    if (!chatLogic->IsGraphLoaded()) {
         std::cerr << "Error: Could not load answer graph. Exiting." << std::endl;
         return 1;
     }
@@ -28,7 +28,7 @@ int main() {
         std::cout << "You: ";
         std::getline(std::cin, userInput);
         if (userInput == "quit") break;
-        chatLogic.SendMessageToChatbot(userInput);
+        chatLogic->SendMessageToChatbot(userInput);
     }
     std::cout << "Goodbye!" << std::endl;
     return 0;
